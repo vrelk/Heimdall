@@ -108,7 +108,15 @@ abstract class SupportedApps
     public static function getList()
     {
         $list_url = 'https://apps.heimdall.site/list';
-        $client = new Client(['http_errors' => false, 'timeout' => 15, 'connect_timeout' => 15]);
+        $client_args = array(
+            'http_errors' => false,
+            'timeout' => 15,
+            'connect_timeout' => 15
+            );
+        if(env('HTTP_PROXY') != null){
+            $client_args['proxy'] = env('HTTP_PROXY');
+        }
+        $client = new Client($client_args);
         return $client->request('GET', $list_url);
     }
 
